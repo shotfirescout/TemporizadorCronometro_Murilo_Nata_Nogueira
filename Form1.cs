@@ -131,20 +131,22 @@ namespace TemporizadorCronomoetro
             String texto = formataTempo();
 
             temporizador.Text = texto;
-
-            s--;
-            if (s == 60)
+            
+            if (s == 0 && m != 0)
             {
-                s = 59;
+                s = 60;
                 m--;
             }
-            else if (m == 60)
+            else if (m == 0 && h != 0)
             {
                 m = 59;
+                s = 60;
                 h--;
             }
+            s--;
 
-            if(s == -1 && m == 0 && h == 0)
+
+            if (s == -1 && m == 0 && h == 0)
             {
                 timer2.Stop();
                 timerPisca.Start();
@@ -185,7 +187,20 @@ namespace TemporizadorCronomoetro
 
         private void btn_iniciar_Click(object sender, EventArgs e)
         {
-            timer2.Start();
+            if(tipo == ModoTimer.TEMPORIZADOR)
+            {
+                if (s != 0 || m != 0 || h != 0)
+                {
+                    timer2.Start();
+                } else
+                {
+                    MessageBox.Show("Porfavor coloque os valores para começar o timer");
+                }
+            } else
+            {
+                timer2.Start();
+            }
+            
         }
 
         private void btn_pausar_Click(object sender, EventArgs e)
